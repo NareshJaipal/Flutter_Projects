@@ -1,3 +1,4 @@
+import 'package:contacts/call_screen.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -15,6 +16,20 @@ class AboutScreen extends StatelessWidget {
           AboutSectionHeader(name: name),
           AboutSectionBody(phoneNumber: phoneNumber),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CallScreen(
+                name: name,
+                phoneNumber: phoneNumber,
+              ),
+            ),
+          );
+        },
+        child: const Icon(Icons.call_rounded),
       ),
     );
   }
@@ -92,7 +107,7 @@ class AboutSectionHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      // height: 250,
+      
       decoration: const BoxDecoration(
           image: DecorationImage(
               fit: BoxFit.cover,

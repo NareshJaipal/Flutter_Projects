@@ -78,7 +78,10 @@ class _HomeScreenState extends State<HomeScreen> {
             child: ListView.builder(
               itemCount: contacts.length,
               itemBuilder: (BuildContext context, int index) {
-                final contact = contacts[index];
+                final sortedContacts = [...contacts];
+                sortedContacts.sort((a, b) => a['name'].compareTo(b['name']));
+
+                final contact = sortedContacts[index];
                 return Padding(
                   padding: const EdgeInsets.all(8),
                   child: ListTile(
