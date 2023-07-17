@@ -14,7 +14,7 @@ class Contacts extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: HomeScreen(),
+      home: const HomeScreen(),
     );
   }
 }

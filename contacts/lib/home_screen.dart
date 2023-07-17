@@ -1,7 +1,14 @@
 import 'package:contacts/about_screen.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, dynamic>> contacts = [
     {'name': 'Abdul Rehman Khan', 'phoneNumber': '+92 312 9052024'},
     {'name': 'Kabeer Oad', 'phoneNumber': '+92 301 3603209'},
@@ -11,18 +18,22 @@ class HomeScreen extends StatelessWidget {
 
   final TextEditingController firstName = TextEditingController();
   final TextEditingController lastName = TextEditingController();
-  final TextEditingController phoneNumber = TextEditingController();
+  final TextEditingController phoneNo = TextEditingController();
 
   void updateTextFieldText(BuildContext context) {
     String updatedName = firstName.text + lastName.text;
-    String updatedNumber = phoneNumber.text;
-    
-    contacts.add({'name': updatedName, 'phoneNumber': updatedNumber});
+    String updatedNumber = phoneNo.text;
+
+    setState(() {
+      contacts.add({'name': updatedName, 'phoneNumber': updatedNumber});
+    });
+
+    firstName.clear();
+    lastName.clear();
+    phoneNo.clear();
 
     Navigator.of(context).pop();
   }
-
-  HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -125,13 +136,13 @@ class HomeScreen extends StatelessWidget {
                             const InputDecoration(label: Text("Last name")),
                       ),
                       TextField(
-                        controller: phoneNumber,
+                        controller: phoneNo,
                         decoration: const InputDecoration(label: Text("Phone")),
                       ),
                       const SizedBox(height: 15),
                       TextButton(
-                        onPressed: () => updateTextFieldText(context),
                         child: const Text("Save"),
+                        onPressed: () => updateTextFieldText(context),
                       ),
                     ],
                   ),
