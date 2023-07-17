@@ -1,8 +1,9 @@
 import 'package:contacts/about_screen.dart';
+// import 'package:contacts/main.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -81,11 +82,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 return Padding(
                   padding: const EdgeInsets.all(8),
                   child: ListTile(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const AboutScreen()),
-                    ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AboutScreen(
+                            name: contact['name'],
+                            phoneNumber: contact['phoneNumber'],
+                          ),
+                        ),
+                      );
+                    },
                     leading: const CircleAvatar(
                       backgroundColor: Colors.lightBlueAccent,
                       child: Icon(

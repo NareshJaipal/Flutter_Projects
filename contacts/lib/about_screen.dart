@@ -1,13 +1,178 @@
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatelessWidget {
-  const AboutScreen({super.key});
+  final String name;
+  final String phoneNumber;
+
+  const AboutScreen({Key? key, required this.name, required this.phoneNumber})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("About"),
+      body: Column(
+        children: [
+          AboutSectionHeader(name: name),
+          AboutSectionBody(phoneNumber: phoneNumber),
+        ],
+      ),
+    );
+  }
+}
+
+// About Section Body
+
+class AboutSectionBody extends StatelessWidget {
+  const AboutSectionBody({
+    super.key,
+    required this.phoneNumber,
+  });
+
+  final String phoneNumber;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(30),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.call_outlined, color: Colors.green),
+                  const SizedBox(width: 30),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        phoneNumber,
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                      const Text(
+                        "Mobile",
+                        style: TextStyle(fontSize: 15, color: Colors.grey),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const Icon(Icons.message_rounded, color: Colors.green)
+            ],
+          ),
+          const SizedBox(height: 35),
+          Row(
+            children: [
+              const Icon(Icons.video_chat_rounded, color: Colors.green),
+              const SizedBox(width: 30),
+              Text(
+                phoneNumber,
+                style: const TextStyle(fontSize: 15),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// About Section Header
+
+class AboutSectionHeader extends StatelessWidget {
+  const AboutSectionHeader({
+    super.key,
+    required this.name,
+  });
+
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      // height: 250,
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image: NetworkImage(
+                  'https://static.vecteezy.com/system/resources/thumbnails/008/058/793/small/abstract-blur-with-bokeh-light-for-background-usage-vector.jpg'))),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.keyboard_arrow_left_rounded,
+                    color: Colors.green, size: 35),
+              ),
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.star_border,
+                        color: Colors.yellow, size: 25),
+                  ),
+                  const SizedBox(width: 10),
+                  IconButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    icon: const Icon(Icons.edit, color: Colors.green, size: 25),
+                  ),
+                  const SizedBox(width: 10),
+                  PopupMenuButton<String>(
+                    itemBuilder: (BuildContext context) {
+                      return [
+                        const PopupMenuItem<String>(
+                          value: "View linked contacts",
+                          child: Text("View linked contacts"),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: "Delete contact",
+                          child: Text("Delete contact"),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: "Share",
+                          child: Text("Share"),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: "Create shortcut",
+                          child: Text("Create shortcut"),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: "Enable audio call recording",
+                          child: Text("Enable audio call recording"),
+                        ),
+                        const PopupMenuItem<String>(
+                          value: "Set ringtone",
+                          child: Text("Set ringtone"),
+                        ),
+                      ];
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+          const CircleAvatar(
+            radius: 55,
+            backgroundColor: Colors.white,
+            child: Icon(Icons.person, size: 80, color: Colors.blueGrey),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            name,
+            style: const TextStyle(fontSize: 35),
+          ),
+          const SizedBox(height: 20),
+        ],
       ),
     );
   }
