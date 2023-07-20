@@ -195,13 +195,13 @@ class _ContactScreenState extends State<ContactScreen> {
         fillColor: Colors.grey[50],
         hintText: 'Search name, number, etc',
         suffixIcon: IconButton(
+          icon: const Icon(Icons.clear_rounded, size: 15),
           color: Colors.red,
           onPressed: () {
             setState(() {
               searchBarController.clear();
             });
           },
-          icon: const Icon(Icons.clear_rounded, size: 15),
         ),
         prefixIcon: const Icon(Icons.search_rounded),
         hoverColor: Colors.lightBlueAccent,
