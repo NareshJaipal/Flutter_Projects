@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:contacts/call_screen.dart';
 
 class AboutScreen extends StatelessWidget {
   final String name;
@@ -56,7 +57,7 @@ class AboutScreen extends StatelessWidget {
                     style: const TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 30),
-                  const AboutScreenActions(),
+                  AboutScreenActions(name: name, phoneNumber: phoneNumber),
                   AboutScreenPhoneNumber(phoneNumber: phoneNumber),
                   const AboutScreenWhatsApp(),
                   Container(
@@ -163,7 +164,12 @@ class AboutScreenPhoneNumber extends StatelessWidget {
 class AboutScreenActions extends StatelessWidget {
   const AboutScreenActions({
     super.key,
+    required this.name,
+    required this.phoneNumber,
   });
+
+  final String name;
+  final String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -196,7 +202,6 @@ class AboutScreenActions extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: Colors.blueGrey)),
           child: TextButton(
-            onPressed: () {},
             child: const Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -204,6 +209,17 @@ class AboutScreenActions extends StatelessWidget {
                 Text("Call"),
               ],
             ),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CallScreen(
+                    name: name,
+                    phoneNumber: phoneNumber,
+                  ),
+                ),
+              );
+            },
           ),
         ),
         Container(
