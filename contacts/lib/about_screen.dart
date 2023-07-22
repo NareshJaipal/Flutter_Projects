@@ -25,14 +25,21 @@ class _AboutScreenState extends State<AboutScreen> {
   final TextEditingController firstName = TextEditingController();
   final TextEditingController lastName = TextEditingController();
   final TextEditingController phoneNumber = TextEditingController();
+  late bool isFavorite;
 
   @override
   void initState() {
     // Initialize the controllers with the existing contact details
     var nameParts = widget.name.split(' ');
-    firstName.text = nameParts[0];
-    lastName.text = nameParts.length > 1 ? nameParts[1] : '';
+    if (nameParts.length > 2) {
+      firstName.text = '${nameParts[0]} ${nameParts[1]}';
+      lastName.text = nameParts.length > 2 ? nameParts[2] : '';
+    } else {
+      firstName.text = nameParts[0];
+      lastName.text = nameParts.length > 1 ? nameParts[1] : '';
+    }
     phoneNumber.text = widget.phoneNumber;
+    isFavorite = !widget.isFavorite;
 
     super.initState();
   }
@@ -42,17 +49,19 @@ class _AboutScreenState extends State<AboutScreen> {
     String updatedNumber = phoneNumber.text;
 
     // Update the contact in the contacts list
-    setState(() {
-      for (int i = 0; i < contacts.length; i++) {
-        if (contacts[i]['name'] == widget.name &&
-            contacts[i]['phoneNumber'] == widget.phoneNumber) {
-          contacts[i]['name'] = updatedName;
-          contacts[i]['phoneNumber'] = updatedNumber;
-
-          break;
+    setState(
+      () {
+        for (int i = 0; i < contacts.length; i++) {
+          if (contacts[i]['name'] == widget.name &&
+              contacts[i]['phoneNumber'] == widget.phoneNumber) {
+            contacts[i]['name'] = updatedName;
+            contacts[i]['phoneNumber'] = updatedNumber;
+            contacts[i]['isFavorite'] = isFavorite;
+            break;
+          }
         }
-      }
-    });
+      },
+    );
 
     Navigator.of(context).pop(); // Close the dialog
   }
@@ -72,77 +81,7 @@ class _AboutScreenState extends State<AboutScreen> {
         ),
         child: Stack(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: const Icon(Icons.keyboard_arrow_left_rounded,
-                      color: Colors.white, size: 35),
-                ),
-                TextButton(
-                  child: const Text(
-                    "Edit Contact",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          content: Container(
-                            margin: const EdgeInsets.all(5),
-                            height: 255,
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                      icon:
-                                          const Icon(Icons.keyboard_arrow_left),
-                                    ),
-                                    const Text("Edit Contact"),
-                                  ],
-                                ),
-                                const Divider(),
-                                TextField(
-                                  controller: firstName,
-                                  decoration: const InputDecoration(
-                                    label: Text('First Name'),
-                                  ),
-                                ),
-                                TextField(
-                                  controller: lastName,
-                                  decoration: const InputDecoration(
-                                    label: Text('Last Name'),
-                                  ),
-                                ),
-                                TextField(
-                                  controller: phoneNumber,
-                                  decoration: const InputDecoration(
-                                    label: Text('Phone Number'),
-                                  ),
-                                ),
-                                const SizedBox(height: 15),
-                                TextButton(
-                                  onPressed: () => updateContact(context),
-                                  child: const Text('Save changes'),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
-              ],
-            ),
+            aboutScreenNavigationBar(context),
             Container(
               width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.only(top: 150),
@@ -190,11 +129,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextButton(
-                          onPressed: () {
-                            setState(() {
-                              widget.isFavorite = !widget.isFavorite;
-                            });
-                          },
+                          onPressed: () => updateContact(context),
                           child: widget.isFavorite
                               ? const Text('Unfavorite')
                               : const Text('Add to Favorite'),
@@ -215,6 +150,79 @@ class _AboutScreenState extends State<AboutScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Row aboutScreenNavigationBar(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        IconButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: const Icon(Icons.keyboard_arrow_left_rounded,
+              color: Colors.white, size: 35),
+        ),
+        TextButton(
+          child: const Text(
+            "Edit Contact",
+            style: TextStyle(fontSize: 20, color: Colors.white),
+          ),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  content: Container(
+                    margin: const EdgeInsets.all(5),
+                    height: 255,
+                    child: Column(
+                      children: [
+                        Row(
+                          children: [
+                            IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: const Icon(Icons.keyboard_arrow_left),
+                            ),
+                            const Text("Edit Contact"),
+                          ],
+                        ),
+                        const Divider(),
+                        TextField(
+                          controller: firstName,
+                          decoration: const InputDecoration(
+                            label: Text('First Name'),
+                          ),
+                        ),
+                        TextField(
+                          controller: lastName,
+                          decoration: const InputDecoration(
+                            label: Text('Last Name'),
+                          ),
+                        ),
+                        TextField(
+                          controller: phoneNumber,
+                          decoration: const InputDecoration(
+                            label: Text('Phone Number'),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        TextButton(
+                          onPressed: () => updateContact(context),
+                          child: const Text('Save changes'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+        ),
+      ],
     );
   }
 }
@@ -377,21 +385,3 @@ class AboutScreenPhoneNumber extends StatelessWidget {
     );
   }
 }
-
-// class AboutScreenNavigationBar extends StatelessWidget {
-//   final firstName;
-//   final lastName;
-//   final phoneNumber;
-
-//   const AboutScreenNavigationBar({
-//     super.key,
-//     this.firstName,
-//     this.lastName,
-//     this.phoneNumber,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return 
-//   }
-// }
