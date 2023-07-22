@@ -1,5 +1,4 @@
 import 'package:contacts/about_screen.dart';
-// import 'package:contacts/main.dart';
 import 'package:flutter/material.dart';
 
 import 'database.dart';
@@ -103,13 +102,15 @@ class _ContactScreenState extends State<ContactScreen> {
                                     builder: (context) => AboutScreen(
                                       name: contact['name'],
                                       phoneNumber: contact['phoneNumber'],
+                                      isFavorite: contact['isFavorite'],
                                     ),
                                   ),
                                 );
                               },
                               leading: const CircleAvatar(
-                                  backgroundColor: Colors.lightBlueAccent,
-                                  child: Icon(Icons.person)),
+                                backgroundColor: Colors.lightBlueAccent,
+                                child: Icon(Icons.person),
+                              ),
                               title: Text(contact['name']),
                             ),
                           ),

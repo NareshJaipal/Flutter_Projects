@@ -1,12 +1,61 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:contacts/call_screen.dart';
 
-class AboutScreen extends StatelessWidget {
+import 'database.dart';
+
+class AboutScreen extends StatefulWidget {
   final String name;
   final String phoneNumber;
+  bool isFavorite;
 
-  const AboutScreen({Key? key, required this.name, required this.phoneNumber})
-      : super(key: key);
+  AboutScreen({
+    Key? key,
+    required this.name,
+    required this.phoneNumber,
+    required this.isFavorite,
+  }) : super(key: key);
+
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  final TextEditingController firstName = TextEditingController();
+  final TextEditingController lastName = TextEditingController();
+  final TextEditingController phoneNumber = TextEditingController();
+
+  @override
+  void initState() {
+    // Initialize the controllers with the existing contact details
+    var nameParts = widget.name.split(' ');
+    firstName.text = nameParts[0];
+    lastName.text = nameParts.length > 1 ? nameParts[1] : '';
+    phoneNumber.text = widget.phoneNumber;
+
+    super.initState();
+  }
+
+  void updateContact(BuildContext context) {
+    String updatedName = '${firstName.text} ${lastName.text}';
+    String updatedNumber = phoneNumber.text;
+
+    // Update the contact in the contacts list
+    setState(() {
+      for (int i = 0; i < contacts.length; i++) {
+        if (contacts[i]['name'] == widget.name &&
+            contacts[i]['phoneNumber'] == widget.phoneNumber) {
+          contacts[i]['name'] = updatedName;
+          contacts[i]['phoneNumber'] = updatedNumber;
+
+          break;
+        }
+      }
+    });
+
+    Navigator.of(context).pop(); // Close the dialog
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,9 +72,79 @@ class AboutScreen extends StatelessWidget {
         ),
         child: Stack(
           children: [
-            const AboutScreenNavigationBar(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  icon: const Icon(Icons.keyboard_arrow_left_rounded,
+                      color: Colors.white, size: 35),
+                ),
+                TextButton(
+                  child: const Text(
+                    "Edit Contact",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: Container(
+                            margin: const EdgeInsets.all(5),
+                            height: 255,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_left),
+                                    ),
+                                    const Text("Edit Contact"),
+                                  ],
+                                ),
+                                const Divider(),
+                                TextField(
+                                  controller: firstName,
+                                  decoration: const InputDecoration(
+                                    label: Text('First Name'),
+                                  ),
+                                ),
+                                TextField(
+                                  controller: lastName,
+                                  decoration: const InputDecoration(
+                                    label: Text('Last Name'),
+                                  ),
+                                ),
+                                TextField(
+                                  controller: phoneNumber,
+                                  decoration: const InputDecoration(
+                                    label: Text('Phone Number'),
+                                  ),
+                                ),
+                                const SizedBox(height: 15),
+                                TextButton(
+                                  onPressed: () => updateContact(context),
+                                  child: const Text('Save changes'),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
             Container(
-              width: MediaQuery.sizeOf(context).width,
+              width: MediaQuery.of(context).size.width,
               margin: const EdgeInsets.only(top: 150),
               decoration: const BoxDecoration(
                 color: Colors.white,
@@ -53,12 +172,16 @@ class AboutScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    name,
+                    widget.name,
                     style: const TextStyle(fontSize: 20),
                   ),
                   const SizedBox(height: 30),
-                  AboutScreenActions(name: name, phoneNumber: phoneNumber),
-                  AboutScreenPhoneNumber(phoneNumber: phoneNumber),
+                  AboutScreenActions(
+                    name: widget.name,
+                    phoneNumber: widget.phoneNumber,
+                    isFavorite: widget.isFavorite,
+                  ),
+                  AboutScreenPhoneNumber(phoneNumber: widget.phoneNumber),
                   const AboutScreenWhatsApp(),
                   Container(
                     width: MediaQuery.sizeOf(context).width,
@@ -67,8 +190,14 @@ class AboutScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextButton(
-                          onPressed: () {},
-                          child: const Text("Add to Favorite"),
+                          onPressed: () {
+                            setState(() {
+                              widget.isFavorite = !widget.isFavorite;
+                            });
+                          },
+                          child: widget.isFavorite
+                              ? const Text('Unfavorite')
+                              : const Text('Add to Favorite'),
                         ),
                         TextButton(
                           onPressed: () {},
@@ -86,6 +215,94 @@ class AboutScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class AboutScreenActions extends StatelessWidget {
+  const AboutScreenActions({
+    Key? key,
+    required this.name,
+    required this.phoneNumber,
+    required this.isFavorite,
+  }) : super(key: key);
+
+  final String name;
+  final String phoneNumber;
+  final bool isFavorite;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Container(
+          width: 95,
+          height: 55,
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.blueGrey),
+          ),
+          child: TextButton(
+            onPressed: () {},
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.message_rounded),
+                Text("Message"),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          width: 95,
+          height: 55,
+          decoration: BoxDecoration(
+            color: Colors.grey[50],
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.blueGrey),
+          ),
+          child: TextButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CallScreen(
+                    name: name,
+                    phoneNumber: phoneNumber,
+                  ),
+                ),
+              );
+            },
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.call_outlined),
+                Text("Call"),
+              ],
+            ),
+          ),
+        ),
+        Container(
+          width: 95,
+          height: 55,
+          decoration: BoxDecoration(
+              color: Colors.grey[50],
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.blueGrey)),
+          child: TextButton(
+            onPressed: () {},
+            child: const Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(Icons.videocam_rounded),
+                Text("Video"),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -161,115 +378,20 @@ class AboutScreenPhoneNumber extends StatelessWidget {
   }
 }
 
-class AboutScreenActions extends StatelessWidget {
-  const AboutScreenActions({
-    super.key,
-    required this.name,
-    required this.phoneNumber,
-  });
+// class AboutScreenNavigationBar extends StatelessWidget {
+//   final firstName;
+//   final lastName;
+//   final phoneNumber;
 
-  final String name;
-  final String phoneNumber;
+//   const AboutScreenNavigationBar({
+//     super.key,
+//     this.firstName,
+//     this.lastName,
+//     this.phoneNumber,
+//   });
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          width: 95,
-          height: 55,
-          decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.blueGrey)),
-          child: TextButton(
-            onPressed: () {},
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.message_rounded),
-                Text("Message"),
-              ],
-            ),
-          ),
-        ),
-        Container(
-          width: 95,
-          height: 55,
-          decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.blueGrey)),
-          child: TextButton(
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.call_outlined),
-                Text("Call"),
-              ],
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CallScreen(
-                    name: name,
-                    phoneNumber: phoneNumber,
-                  ),
-                ),
-              );
-            },
-          ),
-        ),
-        Container(
-          width: 95,
-          height: 55,
-          decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.blueGrey)),
-          child: TextButton(
-            onPressed: () {},
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.videocam_rounded),
-                Text("Video"),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class AboutScreenNavigationBar extends StatelessWidget {
-  const AboutScreenNavigationBar({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: const Icon(Icons.keyboard_arrow_left_rounded,
-              color: Colors.white, size: 35),
-        ),
-        TextButton(
-          onPressed: () {},
-          child: const Text(
-            "Edit Contact",
-            style: TextStyle(fontSize: 20, color: Colors.white),
-          ),
-        ),
-      ],
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return 
+//   }
+// }

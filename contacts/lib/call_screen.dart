@@ -32,7 +32,7 @@ class _CallScreenState extends State<CallScreen> {
               phoneNumber: widget.phoneNumber,
             ),
             Container(
-              margin: const EdgeInsets.all(50),
+              margin: const EdgeInsets.only(bottom: 50),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -82,8 +82,9 @@ class CallScreenHeader extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           const CircleAvatar(
             radius: 55,
             backgroundColor: Colors.grey,
@@ -92,7 +93,7 @@ class CallScreenHeader extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             name,
-            style: const TextStyle(fontSize: 35, color: Colors.white),
+            style: const TextStyle(fontSize: 25, color: Colors.white),
           ),
           const SizedBox(height: 3),
           Row(

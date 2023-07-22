@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'contact_screen.dart';
-
+import 'favorite_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   static const List<Widget> _contactAppOption = <Widget>[
     Text('Recent Page'),
     ContactScreen(),
-    Text('Favorite Page'),
+    FavoriteScreen(),
   ];
 
   void _onItemTapped(int index) {
