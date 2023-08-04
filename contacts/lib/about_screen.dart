@@ -8,6 +8,7 @@ import 'database.dart';
 class AboutScreen extends StatefulWidget {
   final String name;
   final String phoneNumber;
+  final String photo;
   bool isFavorite;
 
   AboutScreen({
@@ -15,6 +16,7 @@ class AboutScreen extends StatefulWidget {
     required this.name,
     required this.phoneNumber,
     required this.isFavorite,
+    required this.photo,
   }) : super(key: key);
 
   @override
@@ -62,8 +64,7 @@ class _AboutScreenState extends State<AboutScreen> {
         }
       },
     );
-
-    Navigator.of(context).pop(); // Close the dialog
+    Navigator.of(context).pop();
   }
 
   @override
@@ -104,10 +105,11 @@ class _AboutScreenState extends State<AboutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const CircleAvatar(
+                  CircleAvatar(
                     radius: 60,
                     backgroundColor: Colors.blueGrey,
-                    child: Icon(Icons.person, size: 80, color: Colors.white),
+                    // child: Icon(Icons.person, size: 80, color: Colors.white),
+                    backgroundImage: AssetImage(widget.photo),
                   ),
                   const SizedBox(height: 20),
                   Text(

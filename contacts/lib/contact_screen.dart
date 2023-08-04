@@ -18,11 +18,11 @@ class _ContactScreenState extends State<ContactScreen> {
   final TextEditingController phoneNo = TextEditingController();
 
   void updateTextFieldText(BuildContext context) {
-    String updatedName = firstName.text + lastName.text;
+    String updatedName = '${firstName.text} ${lastName.text}';
     String updatedNumber = phoneNo.text;
 
     setState(() {
-      contacts.add({'name': updatedName, 'phoneNumber': updatedNumber});
+      contacts.add({'name': updatedName, 'phoneNumber': updatedNumber, 'isFavorite': false,});
     });
 
     firstName.clear();
@@ -103,13 +103,19 @@ class _ContactScreenState extends State<ContactScreen> {
                                       name: contact['name'],
                                       phoneNumber: contact['phoneNumber'],
                                       isFavorite: contact['isFavorite'],
+                                      photo: contact['photo']
                                     ),
                                   ),
                                 );
                               },
-                              leading: const CircleAvatar(
-                                backgroundColor: Colors.lightBlueAccent,
-                                child: Icon(Icons.person),
+                              // leading: const CircleAvatar(
+                              //   backgroundColor: Colors.lightBlueAccent,
+                              //   child: Icon(Icons.person),
+                              // ),
+                              leading: CircleAvatar(
+                                // backgroundColor: Colors.lightBlueAccent,
+                                backgroundImage: AssetImage(contact['photo']),
+                                // child: Image(image: AssetImage(contact['photo'])),
                               ),
                               title: Text(contact['name']),
                             ),

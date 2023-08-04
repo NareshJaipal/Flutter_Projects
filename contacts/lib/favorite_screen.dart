@@ -50,6 +50,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 name: contact['name'],
                                 phoneNumber: contact['phoneNumber'],
                                 isFavorite: contact['isFavorite'],
+                                photo: contact['photo'],
                               ),
                             ),
                           );
