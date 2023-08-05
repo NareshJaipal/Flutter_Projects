@@ -26,6 +26,9 @@ class _ContactScreenState extends State<ContactScreen> {
         'name': updatedName,
         'phoneNumber': updatedNumber,
         'isFavorite': false,
+        'photo': 'photo',
+        'call': false,
+        'time': 'Null',
       });
     });
 
@@ -109,6 +112,7 @@ class _ContactScreenState extends State<ContactScreen> {
                                       isFavorite: contact['isFavorite'],
                                       photo: contact['photo'],
                                       call: contact['call'],
+                                      time: contact['time'],
                                     ),
                                   ),
                                 );
@@ -206,6 +210,7 @@ class _ContactScreenState extends State<ContactScreen> {
           onPressed: () {
             setState(() {
               searchBarController.clear();
+              foundContacts = contacts;
             });
           },
         ),

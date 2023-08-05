@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class CallScreen extends StatefulWidget {
   final String name;
   final String phoneNumber;
+  final String photo;
   const CallScreen({
     Key? key,
     required this.name,
     required this.phoneNumber,
+    required this.photo,
   }) : super(key: key);
 
   @override
@@ -33,6 +35,7 @@ class _CallScreenState extends State<CallScreen> {
             CallScreenHeader(
               name: widget.name,
               phoneNumber: widget.phoneNumber,
+              photo: widget.photo,
             ),
             Container(
               margin: const EdgeInsets.only(bottom: 50),
@@ -71,14 +74,15 @@ class _CallScreenState extends State<CallScreen> {
 }
 
 class CallScreenHeader extends StatelessWidget {
+  final String name;
+  final String phoneNumber;
+  final String photo;
   const CallScreenHeader({
     Key? key,
     required this.name,
     required this.phoneNumber,
+    required this.photo,
   }) : super(key: key);
-
-  final String name;
-  final String phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -87,16 +91,25 @@ class CallScreenHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const SizedBox(height: 30),
-          const CircleAvatar(
-            radius: 55,
-            backgroundColor: Colors.grey,
-            child: Icon(Icons.person, size: 80, color: Colors.white),
+          const SizedBox(height: 50),
+          Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Colors.blue,
+                width: 5,
+              ),
+            ),
+            child: CircleAvatar(
+              radius: 60,
+              backgroundColor: Colors.blueGrey,
+              backgroundImage: AssetImage(photo),
+            ),
           ),
           const SizedBox(height: 10),
           Text(
             name,
-            style: const TextStyle(fontSize: 25, color: Colors.white),
+            style: const TextStyle(fontSize: 23, color: Colors.white),
           ),
           const SizedBox(height: 3),
           Row(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'database.dart';
 
 class RecentCallScreen extends StatefulWidget {
+  // final String formatedTime;
   const RecentCallScreen({super.key});
 
   @override
@@ -48,10 +49,24 @@ class _RecentCallScreenState extends State<RecentCallScreen> {
                                 backgroundImage: AssetImage(contact['photo']),
                               ),
                               title: Text(recentCalls[index]['name']),
-                              trailing: const Text(
-                                'Time',
-                                style:
-                                    TextStyle(fontSize: 13, color: Colors.grey),
+                              subtitle: Row(
+                                children: [
+                                  Transform.rotate(
+                                    angle: 90,
+                                    child: const Icon(
+                                      Icons.arrow_back_rounded,
+                                      size: 18,
+                                      color: Colors.green,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text('Pakistan')
+                                ],
+                              ),
+                              trailing: Text(
+                                recentCalls[index]['time'],
+                                style: const TextStyle(
+                                    fontSize: 13, color: Colors.grey),
                               ),
                             ),
                           ),
@@ -99,7 +114,7 @@ class Header extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(20, 25, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 30, 20, 5),
       child: const Column(
         children: [
           Row(
@@ -108,8 +123,6 @@ class Header extends StatelessWidget {
               Text("Recents", style: TextStyle(fontSize: 28)),
             ],
           ),
-          SizedBox(height: 5),
-          Divider(),
         ],
       ),
     );

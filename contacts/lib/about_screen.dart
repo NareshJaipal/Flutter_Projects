@@ -3,6 +3,7 @@
 import 'package:contacts/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:contacts/call_screen.dart';
+import 'package:intl/intl.dart';
 
 import 'database.dart';
 
@@ -10,6 +11,7 @@ class AboutScreen extends StatefulWidget {
   final String name;
   final String phoneNumber;
   final String photo;
+  final String time;
   bool isFavorite;
   bool call;
 
@@ -20,6 +22,7 @@ class AboutScreen extends StatefulWidget {
     required this.isFavorite,
     required this.photo,
     required this.call,
+    required this.time,
   }) : super(key: key);
 
   @override
@@ -32,7 +35,10 @@ class _AboutScreenState extends State<AboutScreen> {
   final TextEditingController phoneNumber = TextEditingController();
   late bool isFavorite;
   late bool call;
+  late String time;
 
+  DateTime now = DateTime.now();
+  String formatedTime = DateFormat('HH:mm').format(DateTime.now());
   @override
   void initState() {
     // Initialize the controllers with the existing contact details
@@ -46,7 +52,8 @@ class _AboutScreenState extends State<AboutScreen> {
     }
     phoneNumber.text = widget.phoneNumber;
     isFavorite = !widget.isFavorite;
-    call = !widget.call;
+    call = true;
+    time = widget.time;
     super.initState();
   }
 
@@ -68,8 +75,8 @@ class _AboutScreenState extends State<AboutScreen> {
       },
     );
     Navigator.of(context).pop();
-    // Navigator.of(context).pop();
     Navigator.of(context).pop();
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -79,6 +86,7 @@ class _AboutScreenState extends State<AboutScreen> {
           isFavorite: widget.isFavorite,
           photo: widget.photo,
           call: widget.call,
+          time: widget.time,
         ),
       ),
     );
@@ -106,6 +114,7 @@ class _AboutScreenState extends State<AboutScreen> {
           isFavorite: isFavorite,
           photo: widget.photo,
           call: widget.call,
+          time: widget.time,
         ),
       ),
     );
@@ -118,6 +127,7 @@ class _AboutScreenState extends State<AboutScreen> {
           if (contacts[i]['name'] == widget.name &&
               contacts[i]['phoneNumber'] == widget.phoneNumber) {
             contacts[i]['call'] = call;
+            contacts[i]['time'] = formatedTime;
             break;
           }
         }
@@ -129,22 +139,11 @@ class _AboutScreenState extends State<AboutScreen> {
         builder: (context) => CallScreen(
           name: widget.name,
           phoneNumber: widget.phoneNumber,
+          photo: widget.photo,
         ),
       ),
     );
-    // Navigator.of(context).pop();
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => AboutScreen(
-    //       name: widget.name,
-    //       phoneNumber: widget.phoneNumber,
-    //       isFavorite: isFavorite,
-    //       photo: widget.photo,
-    //       call: widget.call,
-    //     ),
-    //   ),
-    // );
+    // print(formatedTime);
   }
 
   @override
@@ -162,7 +161,10 @@ class _AboutScreenState extends State<AboutScreen> {
         ),
         child: Stack(
           children: [
-            aboutScreenNavigationBar(context),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+              child: aboutScreenNavigationBar(context),
+            ),
             const DecorationOnly(),
 
             // Name and Photo
@@ -287,7 +289,7 @@ class _AboutScreenState extends State<AboutScreen> {
         TextButton(
           child: const Text(
             "Edit Contact",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            style: TextStyle(fontSize: 17, color: Colors.white),
           ),
           onPressed: () {
             showDialog(
