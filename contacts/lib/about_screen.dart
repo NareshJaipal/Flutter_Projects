@@ -1,5 +1,6 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:contacts/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:contacts/call_screen.dart';
 
@@ -10,6 +11,7 @@ class AboutScreen extends StatefulWidget {
   final String phoneNumber;
   final String photo;
   bool isFavorite;
+  bool call;
 
   AboutScreen({
     Key? key,
@@ -17,6 +19,7 @@ class AboutScreen extends StatefulWidget {
     required this.phoneNumber,
     required this.isFavorite,
     required this.photo,
+    required this.call,
   }) : super(key: key);
 
   @override
@@ -28,6 +31,7 @@ class _AboutScreenState extends State<AboutScreen> {
   final TextEditingController lastName = TextEditingController();
   final TextEditingController phoneNumber = TextEditingController();
   late bool isFavorite;
+  late bool call;
 
   @override
   void initState() {
@@ -42,7 +46,7 @@ class _AboutScreenState extends State<AboutScreen> {
     }
     phoneNumber.text = widget.phoneNumber;
     isFavorite = !widget.isFavorite;
-
+    call = !widget.call;
     super.initState();
   }
 
@@ -58,6 +62,34 @@ class _AboutScreenState extends State<AboutScreen> {
               contacts[i]['phoneNumber'] == widget.phoneNumber) {
             contacts[i]['name'] = updatedName;
             contacts[i]['phoneNumber'] = updatedNumber;
+            break;
+          }
+        }
+      },
+    );
+    Navigator.of(context).pop();
+    // Navigator.of(context).pop();
+    Navigator.of(context).pop();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AboutScreen(
+          name: updatedName,
+          phoneNumber: updatedNumber,
+          isFavorite: widget.isFavorite,
+          photo: widget.photo,
+          call: widget.call,
+        ),
+      ),
+    );
+  }
+
+  void updateIsFavorite(BuildContext context) {
+    setState(
+      () {
+        for (int i = 0; i < contacts.length; i++) {
+          if (contacts[i]['name'] == widget.name &&
+              contacts[i]['phoneNumber'] == widget.phoneNumber) {
             contacts[i]['isFavorite'] = isFavorite;
             break;
           }
@@ -65,6 +97,54 @@ class _AboutScreenState extends State<AboutScreen> {
       },
     );
     Navigator.of(context).pop();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AboutScreen(
+          name: widget.name,
+          phoneNumber: widget.phoneNumber,
+          isFavorite: isFavorite,
+          photo: widget.photo,
+          call: widget.call,
+        ),
+      ),
+    );
+  }
+
+  void updateCall(BuildContext context) {
+    setState(
+      () {
+        for (int i = 0; i < contacts.length; i++) {
+          if (contacts[i]['name'] == widget.name &&
+              contacts[i]['phoneNumber'] == widget.phoneNumber) {
+            contacts[i]['call'] = call;
+            break;
+          }
+        }
+      },
+    );
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CallScreen(
+          name: widget.name,
+          phoneNumber: widget.phoneNumber,
+        ),
+      ),
+    );
+    // Navigator.of(context).pop();
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => AboutScreen(
+    //       name: widget.name,
+    //       phoneNumber: widget.phoneNumber,
+    //       isFavorite: isFavorite,
+    //       photo: widget.photo,
+    //       call: widget.call,
+    //     ),
+    //   ),
+    // );
   }
 
   @override
@@ -83,20 +163,7 @@ class _AboutScreenState extends State<AboutScreen> {
         child: Stack(
           children: [
             aboutScreenNavigationBar(context),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.only(top: 150),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(30),
-                  topLeft: Radius.circular(30),
-                ),
-              ),
-              child: const Column(
-                children: [Text("D")],
-              ),
-            ),
+            const DecorationOnly(),
 
             // Name and Photo
             Container(
@@ -105,22 +172,72 @@ class _AboutScreenState extends State<AboutScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  CircleAvatar(
-                    radius: 60,
-                    backgroundColor: Colors.blueGrey,
-                    // child: Icon(Icons.person, size: 80, color: Colors.white),
-                    backgroundImage: AssetImage(widget.photo),
-                  ),
+                  ProfilePicture(widget: widget),
                   const SizedBox(height: 20),
-                  Text(
-                    widget.name,
-                    style: const TextStyle(fontSize: 20),
-                  ),
+                  Text(widget.name, style: const TextStyle(fontSize: 20)),
                   const SizedBox(height: 30),
-                  AboutScreenActions(
-                    name: widget.name,
-                    phoneNumber: widget.phoneNumber,
-                    isFavorite: widget.isFavorite,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        width: 95,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.blueGrey),
+                        ),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.message_rounded),
+                              Text("Message"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 95,
+                        height: 55,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[50],
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(color: Colors.blueGrey),
+                        ),
+                        child: TextButton(
+                          onPressed: () {
+                            updateCall(context);
+                          },
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.call_outlined),
+                              Text("Call"),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: 95,
+                        height: 55,
+                        decoration: BoxDecoration(
+                            color: Colors.grey[50],
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(color: Colors.blueGrey)),
+                        child: TextButton(
+                          onPressed: () {},
+                          child: const Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(Icons.videocam_rounded),
+                              Text("Video"),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   AboutScreenPhoneNumber(phoneNumber: widget.phoneNumber),
                   const AboutScreenWhatsApp(),
@@ -131,7 +248,7 @@ class _AboutScreenState extends State<AboutScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextButton(
-                          onPressed: () => updateContact(context),
+                          onPressed: () => updateIsFavorite(context),
                           child: widget.isFavorite
                               ? const Text('Unfavorite')
                               : const Text('Add to Favorite'),
@@ -161,7 +278,8 @@ class _AboutScreenState extends State<AboutScreen> {
       children: [
         IconButton(
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
           },
           icon: const Icon(Icons.keyboard_arrow_left_rounded,
               color: Colors.white, size: 35),
@@ -229,90 +347,53 @@ class _AboutScreenState extends State<AboutScreen> {
   }
 }
 
-class AboutScreenActions extends StatelessWidget {
-  const AboutScreenActions({
-    Key? key,
-    required this.name,
-    required this.phoneNumber,
-    required this.isFavorite,
-  }) : super(key: key);
+class ProfilePicture extends StatelessWidget {
+  const ProfilePicture({
+    super.key,
+    required this.widget,
+  });
 
-  final String name;
-  final String phoneNumber;
-  final bool isFavorite;
+  final AboutScreen widget;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        Container(
-          width: 95,
-          height: 55,
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.blueGrey),
-          ),
-          child: TextButton(
-            onPressed: () {},
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.message_rounded),
-                Text("Message"),
-              ],
-            ),
-          ),
+    return Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: Colors.black38,
+          width: 5,
         ),
-        Container(
-          width: 95,
-          height: 55,
-          decoration: BoxDecoration(
-            color: Colors.grey[50],
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: Colors.blueGrey),
-          ),
-          child: TextButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CallScreen(
-                    name: name,
-                    phoneNumber: phoneNumber,
-                  ),
-                ),
-              );
-            },
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.call_outlined),
-                Text("Call"),
-              ],
-            ),
-          ),
+      ),
+      child: CircleAvatar(
+        radius: 60,
+        backgroundColor: Colors.blueGrey,
+        backgroundImage: AssetImage(widget.photo),
+      ),
+    );
+  }
+}
+
+class DecorationOnly extends StatelessWidget {
+  const DecorationOnly({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      margin: const EdgeInsets.only(top: 150),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30),
+          topLeft: Radius.circular(30),
         ),
-        Container(
-          width: 95,
-          height: 55,
-          decoration: BoxDecoration(
-              color: Colors.grey[50],
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.blueGrey)),
-          child: TextButton(
-            onPressed: () {},
-            child: const Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(Icons.videocam_rounded),
-                Text("Video"),
-              ],
-            ),
-          ),
-        ),
-      ],
+      ),
+      child: const Column(
+        children: [Text("D")],
+      ),
     );
   }
 }

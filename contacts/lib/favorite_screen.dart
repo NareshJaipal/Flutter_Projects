@@ -51,13 +51,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                 phoneNumber: contact['phoneNumber'],
                                 isFavorite: contact['isFavorite'],
                                 photo: contact['photo'],
+                                call: contact['call'],
                               ),
                             ),
                           );
                         },
-                        leading: const CircleAvatar(
+                        leading: CircleAvatar(
                           backgroundColor: Colors.lightBlueAccent,
-                          child: Icon(Icons.person),
+                          backgroundImage: AssetImage(contact['photo']),
                         ),
                         title: Text(favoriteContacts[index]['name']),
                       ),

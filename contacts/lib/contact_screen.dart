@@ -22,7 +22,11 @@ class _ContactScreenState extends State<ContactScreen> {
     String updatedNumber = phoneNo.text;
 
     setState(() {
-      contacts.add({'name': updatedName, 'phoneNumber': updatedNumber, 'isFavorite': false,});
+      contacts.add({
+        'name': updatedName,
+        'phoneNumber': updatedNumber,
+        'isFavorite': false,
+      });
     });
 
     firstName.clear();
@@ -103,19 +107,14 @@ class _ContactScreenState extends State<ContactScreen> {
                                       name: contact['name'],
                                       phoneNumber: contact['phoneNumber'],
                                       isFavorite: contact['isFavorite'],
-                                      photo: contact['photo']
+                                      photo: contact['photo'],
+                                      call: contact['call'],
                                     ),
                                   ),
                                 );
                               },
-                              // leading: const CircleAvatar(
-                              //   backgroundColor: Colors.lightBlueAccent,
-                              //   child: Icon(Icons.person),
-                              // ),
                               leading: CircleAvatar(
-                                // backgroundColor: Colors.lightBlueAccent,
                                 backgroundImage: AssetImage(contact['photo']),
-                                // child: Image(image: AssetImage(contact['photo'])),
                               ),
                               title: Text(contact['name']),
                             ),

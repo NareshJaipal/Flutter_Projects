@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 class CallScreen extends StatefulWidget {
   final String name;
   final String phoneNumber;
-  const CallScreen({Key? key, required this.name, required this.phoneNumber})
-      : super(key: key);
+  const CallScreen({
+    Key? key,
+    required this.name,
+    required this.phoneNumber,
+  }) : super(key: key);
 
   @override
   State<CallScreen> createState() => _CallScreenState();
