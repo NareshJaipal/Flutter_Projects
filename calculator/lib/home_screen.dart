@@ -18,24 +18,75 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               flex: 2,
               child: Container(
-                color: Colors.blue,
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      child: const Text(
+                        '0',
+                        style: TextStyle(fontSize: 60, color: Colors.lightBlue),
+                      ),
+                    ),
+                    const Text('Naresh'),
+                  ],
+                ),
               ),
             ),
             Expanded(
               flex: 3,
               child: Container(
                 padding: const EdgeInsets.all(5),
-                child: const Column(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        MyButton(
-                          btnText: 'C',
-                          btnColor: 'blue',
-                          textColor: 'white',
-                        ),
+                        myButton('C', Colors.blue),
+                        myButton('D', Colors.blue),
+                        myButton('%', Colors.blue),
+                        myButton('/', Colors.blue),
                       ],
-                    )
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        myButton('7', Colors.black),
+                        myButton('8', Colors.black),
+                        myButton('9', Colors.black),
+                        myButton('X', Colors.blue),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        myButton('4', Colors.black),
+                        myButton('5', Colors.black),
+                        myButton('6', Colors.black),
+                        myButton('-', Colors.blue),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        myButton('1', Colors.black),
+                        myButton('2', Colors.black),
+                        myButton('3', Colors.black),
+                        myButton('+', Colors.blue),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        myButton('0', Colors.black),
+                        myButton('.', Colors.black),
+                        myButton('+/-', Colors.blue),
+                        myButton('=', Colors.blue),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -45,30 +96,28 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
-class MyButton extends StatelessWidget {
-  final String btnText;
-  final String btnColor;
-  final textColor;
-
-  const MyButton({
-    super.key,
-    required this.btnText,
-    required this.btnColor,
-    required this.textColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
+  ElevatedButton myButton(String btnText, Color textColor) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.white,
-        shadowColor: Colors.grey,
+        shadowColor: Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
       ),
-      child: Text(
-        btnText,
-        style: const TextStyle(fontSize: 35, color: textColor),
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        height: 50,
+        child: Center(
+          child: Text(
+            btnText,
+            style: TextStyle(
+              fontSize: 20,
+              color: textColor,
+            ),
+          ),
+        ),
       ),
       onPressed: () {},
     );
