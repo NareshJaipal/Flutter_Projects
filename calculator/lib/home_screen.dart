@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -8,6 +9,83 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String result = '0';
+  String fullResult = '0';
+
+  void handleNumberButton(String value) {
+    value = value.replaceAll('X', '*');
+    if (value == '        =        ') {
+      try {
+        Parser p = Parser();
+        Expression exp = p.parse(result);
+        ContextModel cm = ContextModel();
+        double eval = exp.evaluate(EvaluationType.REAL, cm);
+        setState(() {
+          result = eval.toString();
+          fullResult = result;
+        });
+      } catch (e) {
+        setState(() {
+          result = 'Error';
+          fullResult = '';
+        });
+      }
+    } else if (value == 'C') {
+      setState(() {
+        result = '0';
+        fullResult = '';
+      });
+    } else if (value == 'D') {
+      setState(() {
+        if (result.length < 2) {
+          result = '0';
+          fullResult = '';
+        } else {
+          result = result.substring(0, result.length - 1);
+          fullResult = result;
+        }
+      });
+    } else if (value == '.') {
+      setState(
+        () {
+          if (result == '0') {
+            result = '0$value';
+          } else {
+            // result = result.substring(0, result.length - 1) + value;
+            result = '$result$value';
+          }
+          fullResult = result;
+        },
+      );
+    } else if ('+-*/'.contains(value)) {
+      if ('+-*/'.contains(result.substring(result.length - 1))) {
+        setState(() {
+          result = result.substring(0, result.length - 1) + value;
+        });
+      } else {
+        setState(() {
+          if (result == '0') {
+            result = value;
+          } else {
+            result += value;
+          }
+          fullResult = result;
+        });
+      }
+    } else {
+      setState(
+        () {
+          if (result == '0') {
+            result = value;
+          } else {
+            result += value;
+          }
+          fullResult = result;
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +101,28 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Container(),
                     Container(
                       padding: const EdgeInsets.all(5),
-                      child: const Text(
-                        '0',
-                        style: TextStyle(fontSize: 60, color: Colors.lightBlue),
+                      child: Text(
+                        result,
+                        style: TextStyle(
+                            fontSize: result.length < 5
+                                ? 60
+                                : result.length < 8
+                                    ? 50
+                                    : result.length < 11
+                                        ? 40
+                                        : result.length < 15
+                                            ? 30
+                                            : 20,
+                            color: Colors.lightBlue),
                       ),
                     ),
-                    const Text('Naresh'),
+                    Container(
+                      padding: const EdgeInsets.all(5),
+                      child: Text(fullResult),
+                    ),
                   ],
                 ),
               ),
@@ -83,8 +175,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         myButton('0', Colors.black),
                         myButton('.', Colors.black),
-                        myButton('+/-', Colors.blue),
-                        myButton('=', Colors.blue),
+                        // myButton('+/-', Colors.blue),
+                        myButton('        =        ', Colors.blue),
                       ],
                     ),
                   ],
@@ -110,16 +202,24 @@ class _HomeScreenState extends State<HomeScreen> {
         padding: const EdgeInsets.all(5),
         height: 50,
         child: Center(
-          child: Text(
-            btnText,
-            style: TextStyle(
-              fontSize: 20,
-              color: textColor,
-            ),
-          ),
+          child: btnText == 'D'
+              ? Icon(
+                  Icons.backspace_outlined,
+                  color: textColor,
+                  size: 18,
+                )
+              : Text(
+                  btnText,
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: textColor,
+                  ),
+                ),
         ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        handleNumberButton(btnText);
+      },
     );
   }
 }
