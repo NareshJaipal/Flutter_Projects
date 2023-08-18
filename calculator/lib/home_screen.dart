@@ -9,11 +9,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool darkmode = false;
   String result = '0';
-  String fullResult = '0';
+  String fullResult = '';
 
   void handleNumberButton(String value) {
-    value = value.replaceAll('X', '*');
+    value = value.replaceAll('x', '*');
     if (value == '        =        ') {
       try {
         Parser p = Parser();
@@ -46,17 +47,18 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       });
     } else if (value == '.') {
-      setState(
-        () {
-          if (result == '0') {
-            result = '0$value';
-          } else {
-            // result = result.substring(0, result.length - 1) + value;
-            result = '$result$value';
-          }
-          fullResult = result;
-        },
-      );
+      if (!result.contains('.')) {
+        setState(
+          () {
+            if (result == '0') {
+              result = '0$value';
+            } else {
+              result += value;
+            }
+            fullResult = result;
+          },
+        );
+      }
     } else if ('+-*/'.contains(value)) {
       if ('+-*/'.contains(result.substring(result.length - 1))) {
         setState(() {
@@ -90,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: Colors.white,
+        color: darkmode ? Colors.black87 : Colors.white10,
         child: Column(
           children: [
             Expanded(
@@ -99,29 +101,55 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      child: Text(
-                        result,
-                        style: TextStyle(
-                            fontSize: result.length < 5
-                                ? 60
-                                : result.length < 8
-                                    ? 50
-                                    : result.length < 11
-                                        ? 40
-                                        : result.length < 15
-                                            ? 30
-                                            : 20,
-                            color: Colors.lightBlue),
+                    Transform.scale(
+                      scale: 1.3,
+                      child: Switch(
+                        trackColor:
+                            const MaterialStatePropertyAll(Colors.black38),
+                        thumbColor:
+                            const MaterialStatePropertyAll(Colors.white),
+                        activeThumbImage: const NetworkImage(
+                            'https://cdn4.iconfinder.com/data/icons/music-ui-solid-24px/24/moon_dark_mode_night-2-256.png'),
+                        inactiveThumbImage: const NetworkImage(
+                            'https://cdn2.iconfinder.com/data/icons/bubble-set-general/48/Sun-1024.png'),
+                        value: darkmode,
+                        onChanged: (value) => setState(() {
+                          darkmode = !darkmode;
+                        }),
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.all(5),
-                      child: Text(fullResult),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Container(),
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            result,
+                            style: TextStyle(
+                                fontSize: result.length < 5
+                                    ? 60
+                                    : result.length < 8
+                                        ? 50
+                                        : result.length < 11
+                                            ? 40
+                                            : result.length < 15
+                                                ? 30
+                                                : 20,
+                                color: darkmode ? Colors.white : Colors.blue),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            fullResult,
+                            style: TextStyle(
+                                color: darkmode ? Colors.grey : Colors.black),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -137,46 +165,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        myButton('C', Colors.blue),
-                        myButton('D', Colors.blue),
-                        myButton('%', Colors.blue),
-                        myButton('/', Colors.blue),
+                        myButton('C', darkmode ? Colors.grey : Colors.blue),
+                        myButton('D', darkmode ? Colors.grey : Colors.blue),
+                        myButton('%', darkmode ? Colors.grey : Colors.blue),
+                        myButton('/', darkmode ? Colors.grey : Colors.blue),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        myButton('7', Colors.black),
-                        myButton('8', Colors.black),
-                        myButton('9', Colors.black),
-                        myButton('X', Colors.blue),
+                        myButton('7', darkmode ? Colors.white : Colors.black),
+                        myButton('8', darkmode ? Colors.white : Colors.black),
+                        myButton('9', darkmode ? Colors.white : Colors.black),
+                        myButton('x', darkmode ? Colors.grey : Colors.blue),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        myButton('4', Colors.black),
-                        myButton('5', Colors.black),
-                        myButton('6', Colors.black),
-                        myButton('-', Colors.blue),
+                        myButton('4', darkmode ? Colors.white : Colors.black),
+                        myButton('5', darkmode ? Colors.white : Colors.black),
+                        myButton('6', darkmode ? Colors.white : Colors.black),
+                        myButton('-', darkmode ? Colors.grey : Colors.blue),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        myButton('1', Colors.black),
-                        myButton('2', Colors.black),
-                        myButton('3', Colors.black),
-                        myButton('+', Colors.blue),
+                        myButton('1', darkmode ? Colors.white : Colors.black),
+                        myButton('2', darkmode ? Colors.white : Colors.black),
+                        myButton('3', darkmode ? Colors.white : Colors.black),
+                        myButton('+', darkmode ? Colors.grey : Colors.blue),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        myButton('0', Colors.black),
-                        myButton('.', Colors.black),
-                        // myButton('+/-', Colors.blue),
-                        myButton('        =        ', Colors.blue),
+                        myButton('0', darkmode ? Colors.white : Colors.black),
+                        myButton('.', darkmode ? Colors.white : Colors.black),
+                        myButton('        =        ',
+                            darkmode ? Colors.grey : Colors.blue),
                       ],
                     ),
                   ],
@@ -192,8 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
   ElevatedButton myButton(String btnText, Color textColor) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
-        shadowColor: Colors.black,
+        backgroundColor: darkmode ? Colors.black : Colors.white,
+        shadowColor: darkmode ? Colors.white : Colors.black,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
         ),

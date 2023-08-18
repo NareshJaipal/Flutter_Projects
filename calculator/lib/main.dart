@@ -9,11 +9,12 @@ class Calculator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.grey),
+      // theme:
+      //     darkmode ? ThemeData(primarySwatch: Colors.grey) : ThemeData.dark(),
       title: 'Calculator',
-      home: const HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }
