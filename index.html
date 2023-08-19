@@ -11,93 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      padding: 0;
-      margin: 0;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      padding: 1rem 150px;
-      background-color: #fff;
-      color: #121212;
-      margin: 50px 80px 0;
-      max-width: 2048px;
-    }
-
-    a {
-      color: #8468ff;
-    }
-
-    a:hover {
-      color: #6751c7;
-    }
-
-    header {
-      text-align: center;
-      background-image: linear-gradient(180deg, #6751c7 0%, rgba(217, 217, 217, 0) 100%);
-      height: 200px;
-      padding: 32px;
-      color: var(--main-heading-color);
-      /* border-radius: var(--container-border-radius); */
-      /* border: 2px solid white; */
-      border-radius: 20px 20px 10px 10px;
-    }
-
-    .title-heading {
-      font-family: 'Outfit';
-      font-style: normal;
-      font-weight: 700;
-      font-size: 48px;
-
-      margin-bottom: 0;
-    }
-
-
-    main {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      margin: 1rem 0;
-      padding: 1rem;
-    }
-
-    .card {
-      border: 2px solid #302e2e;
-
-      padding: 0.5rem;
-      margin: 0.5rem;
-      border-radius: 0.5rem;
-
-    }
-
-    .card:hover {
-      border: 2px solid #eee;
-      transition: 0.3s ease-in-out;
-      cursor: pointer;
-    }
-
-    .heading {
-      font-size: 1.5rem;
-      font-weight: 700;
-    }
-
-    .desc {
-      font-size: 0.85rem;
-      margin-bottom: 0.5rem;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-
-      main {
-        gap: 1rem;
-        grid-template-columns: repeat(1, 1fr);
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -107,37 +21,30 @@
   </header>
   <main>
     <div class="card">
-      <p class="heading">Contact App</p>
-      <p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, quisquam?</p>
-      <a href="contacts\build\">Open Project &#8594;</a>
+      <img src="assets/chat-app.png">
+      <p class="heading">Realtime Chat Application</p>
+      <p class="desc">A realtime public chat room application that can update in realtime and allow for communication between users.</p>
+      <a target="_blank" href="https://nareshjaipal.github.io/Chat-App/#/">Open Project &#8594;</a>
     </div>
     <div class="card">
-      <p class="heading">Chat App</p>
-      <p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, quisquam?</p>
-      <a href="https://nareshjaipal.github.io/Chat-App/#/">Open Project &#8594;</a>
+      <p class="heading">WhatsApp Clone</p>
+      <p class="desc">A clone of interface of infamous chat application "WhatsApp"</p>
+      <a target="_blank" href="https://nareshjaipal.github.io/WhatsApp/">Open Project &#8594;</a>
     </div>
     <div class="card">
-      <p class="heading">WhatsApp</p>
-      <p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, quisquam?</p>
-      <a href="#">Open Project &#8594;</a>
-    </div>
-
-    <div class="card">
-      <p class="heading">Calculator</p>
-      <p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, quisquam?</p>
-      <a href="calculator\web\">Open Project &#8594;</a>
+      <img src="assets/contact-app.png">
+      <p class="heading">Contact Application</p>
+      <p class="desc">A contact management application that can store user contacts and edit the stored contacts</p>
+      <a target="_blank" href="contacts\build\">Open Project &#8594;</a>
     </div>
     <div class="card">
-      <p class="heading">Contact App</p>
-      <p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, quisquam?</p>
-      <a href="./contacts/build/">Open Project &#8594;</a>
-    </div>
-    <div class="card">
-      <p class="heading">Flutter App</p>
-      <p class="desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Omnis, quisquam?</p>
-      <a href="#">Open Project &#8594;</a>
+      <img src="assets/calculator-app.png">
+      <p class="heading">Calculator Application</p>
+      <p class="desc">A simple yet beautiful calculator application</p>
+      <a target="_blank" href="calculator\web\">Open Project &#8594;</a>
     </div>
   </main>
+  <footer>&copy; Naresh Kumar 2023</footer>
 </body>
 
 </html>
