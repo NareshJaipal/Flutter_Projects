@@ -148,41 +148,43 @@ class _ContactScreenState extends State<ContactScreen> {
             return AlertDialog(
               content: Container(
                 margin: const EdgeInsets.all(5),
-                height: 255,
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(Icons.keyboard_arrow_left_rounded),
-                        ),
-                        const Text("Create a new contact"),
-                      ],
-                    ),
-                    const Divider(),
-                    TextField(
-                      controller: firstName,
-                      decoration:
-                          const InputDecoration(label: Text("First name")),
-                    ),
-                    TextField(
-                      controller: lastName,
-                      decoration:
-                          const InputDecoration(label: Text("Last name")),
-                    ),
-                    TextField(
-                      controller: phoneNo,
-                      decoration: const InputDecoration(label: Text("Phone")),
-                    ),
-                    const SizedBox(height: 15),
-                    TextButton(
-                      child: const Text("Save"),
-                      onPressed: () => updateTextFieldText(context),
-                    ),
-                  ],
+                height: 260,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: const Icon(Icons.keyboard_arrow_left_rounded),
+                          ),
+                          const Text("Create a new contact"),
+                        ],
+                      ),
+                      const Divider(),
+                      TextField(
+                        controller: firstName,
+                        decoration:
+                            const InputDecoration(label: Text("First name")),
+                      ),
+                      TextField(
+                        controller: lastName,
+                        decoration:
+                            const InputDecoration(label: Text("Last name")),
+                      ),
+                      TextField(
+                        controller: phoneNo,
+                        decoration: const InputDecoration(label: Text("Phone")),
+                      ),
+                      const SizedBox(height: 15),
+                      TextButton(
+                        child: const Text("Save"),
+                        onPressed: () => updateTextFieldText(context),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

@@ -298,45 +298,47 @@ class _AboutScreenState extends State<AboutScreen> {
                 return AlertDialog(
                   content: Container(
                     margin: const EdgeInsets.all(5),
-                    height: 255,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              icon: const Icon(Icons.keyboard_arrow_left),
+                    height: 260,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              IconButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                icon: const Icon(Icons.keyboard_arrow_left),
+                              ),
+                              const Text("Edit Contact"),
+                            ],
+                          ),
+                          const Divider(),
+                          TextField(
+                            controller: firstName,
+                            decoration: const InputDecoration(
+                              label: Text('First Name'),
                             ),
-                            const Text("Edit Contact"),
-                          ],
-                        ),
-                        const Divider(),
-                        TextField(
-                          controller: firstName,
-                          decoration: const InputDecoration(
-                            label: Text('First Name'),
                           ),
-                        ),
-                        TextField(
-                          controller: lastName,
-                          decoration: const InputDecoration(
-                            label: Text('Last Name'),
+                          TextField(
+                            controller: lastName,
+                            decoration: const InputDecoration(
+                              label: Text('Last Name'),
+                            ),
                           ),
-                        ),
-                        TextField(
-                          controller: phoneNumber,
-                          decoration: const InputDecoration(
-                            label: Text('Phone Number'),
+                          TextField(
+                            controller: phoneNumber,
+                            decoration: const InputDecoration(
+                              label: Text('Phone Number'),
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 15),
-                        TextButton(
-                          onPressed: () => updateContact(context),
-                          child: const Text('Save changes'),
-                        ),
-                      ],
+                          const SizedBox(height: 15),
+                          TextButton(
+                            onPressed: () => updateContact(context),
+                            child: const Text('Save changes'),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 );
